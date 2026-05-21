@@ -65,12 +65,8 @@
 
     <repositories>
         <repository>
-            <id>pluginwiki-repo</id>
-            <url>https://repo.bsdevelopment.org/releases</url>
-        </repository>
-        <repository>
-            <id>velocitypowered-repo</id>
-            <url>https://repo.velocitypowered.com/releases/</url>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
         </repository>
         <repository>
             <id>papermc</id>

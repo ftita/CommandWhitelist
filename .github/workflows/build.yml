@@ -35,7 +35,7 @@ jobs:
               -->
               <mirror>
                 <id>redirect-to-papermc</id>
-                <mirrorOf>*,!central,!papermc,!sonatype,!sonatype-snapshots,!minecraft-libraries,!spongepowered-repo</mirrorOf>
+                <mirrorOf>*,!central,!papermc,!sonatype,!sonatype-snapshots,!jitpack,!minecraft-libraries,!spongepowered-repo</mirrorOf>
                 <url>https://repo.papermc.io/repository/maven-public/</url>
               </mirror>
             </mirrors>
