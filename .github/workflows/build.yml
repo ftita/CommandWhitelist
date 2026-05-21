@@ -20,6 +20,28 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Redirect dead repositories to PaperMC
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <mirrors>
+              <!--
+                repo.velocitypowered.com is deprecated and returns HTML pages instead of
+                Maven artifacts. Mirror any undeclared external repository to PaperMC,
+                which proxies all Minecraft-ecosystem dependencies.
+              -->
+              <mirror>
+                <id>redirect-to-papermc</id>
+                <mirrorOf>*,!central,!papermc,!sonatype,!sonatype-snapshots,!minecraft-libraries,!spongepowered-repo</mirrorOf>
+                <url>https://repo.papermc.io/repository/maven-public/</url>
+              </mirror>
+            </mirrors>
+          </settings>
+          EOF
+
       - name: Build with Maven
         run: mvn package -B --no-transfer-progress
 
