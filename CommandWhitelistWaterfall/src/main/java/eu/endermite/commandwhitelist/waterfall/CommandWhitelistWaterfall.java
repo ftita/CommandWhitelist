@@ -8,7 +8,6 @@ import eu.endermite.commandwhitelist.waterfall.listeners.BungeeChatEventListener
 import eu.endermite.commandwhitelist.waterfall.listeners.BungeeTabcompleteListener;
 import eu.endermite.commandwhitelist.waterfall.listeners.WaterfallDefineCommandsListener;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
-import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -108,19 +107,19 @@ public final class CommandWhitelistWaterfall extends Plugin {
     }
 
     /**
-     * @return Command denied message component. Uses per-group custom message if set,
-     *         otherwise falls back to vanilla's translatable "unknown command" component
-     *         so the client renders it in their own language.
+     * @return Command denied message. Will use custom if command exists in any group.
      */
-    public static Component getCommandDeniedMessage(String command) {
+    public static String getCommandDeniedMessage(String command) {
+        String commandDeniedMessage = configCache.command_denied;
         HashMap<String, CWGroup> groups = configCache.getGroupList();
         for (CWGroup group : groups.values()) {
             if (group.getCommands().contains(command)) {
                 if (group.getCommandDeniedMessage() == null || group.getCommandDeniedMessage().isEmpty()) continue;
-                return CWCommand.getParsedErrorMessage(command, configCache.prefix + group.getCommandDeniedMessage());
+                commandDeniedMessage = group.getCommandDeniedMessage();
+                break;
             }
         }
-        return CWCommand.UNKNOWN_COMMAND;
+        return commandDeniedMessage;
     }
 
     public static ArrayList<String> getServerCommands() {

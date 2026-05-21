@@ -30,7 +30,10 @@ public class PlayerCommandPreProcessListener implements Listener {
         HashSet<String> commands = CommandWhitelistBukkit.getCommands(player);
         if (!commands.contains(label)) {
             event.setCancelled(true);
-            Component message = CommandWhitelistBukkit.getCommandDeniedMessage(label);
+            Component message = CWCommand.getParsedErrorMessage(
+                    messageWithoutSlash,
+                    config.prefix + CommandWhitelistBukkit.getCommandDeniedMessage(label)
+            );
             switch (config.messageType) {
                 case CHAT:
                     audiences.player(player).sendMessage(message);
@@ -47,7 +50,9 @@ public class PlayerCommandPreProcessListener implements Listener {
         for (String bannedSubCommand : bannedSubCommands) {
             if (messageWithoutSlash.startsWith(bannedSubCommand)) {
                 event.setCancelled(true);
-                audiences.player(player).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                audiences.player(player).sendMessage(
+                        CWCommand.getParsedErrorMessage(messageWithoutSlash, config.prefix + config.subcommand_denied)
+                );
                 return;
             }
         }

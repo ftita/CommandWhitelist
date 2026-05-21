@@ -24,19 +24,20 @@ public class BukkitCommandExecutor implements TabExecutor {
             audiences.sender(sender).sendMessage(CWCommand.helpComponent(label, sender.hasPermission(CWPermission.RELOAD.permission()), sender.hasPermission(CWPermission.ADMIN.permission())));
             return true;
         }
+        String typedCommand = args.length > 0 ? label + " " + String.join(" ", args) : label;
         try {
             CWCommand.CommandType commandType = CWCommand.CommandType.valueOf(args[0].toUpperCase());
             switch (commandType) {
                 case RELOAD:
                     if (!sender.hasPermission(CWPermission.RELOAD.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
                         return true;
                     }
                     CommandWhitelistBukkit.getPlugin().reloadPluginConfig(sender);
                     return true;
                 case ADD:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
                         return true;
                     }
                     if (args.length == 3) {
@@ -49,7 +50,7 @@ public class BukkitCommandExecutor implements TabExecutor {
                     return true;
                 case REMOVE:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
                         return true;
                     }
                     if (args.length == 3) {
@@ -62,7 +63,7 @@ public class BukkitCommandExecutor implements TabExecutor {
                     return true;
                 case DUMP:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
                         return true;
                     }
                     audiences.sender(sender).sendMessage(Component.text("Dumping all available commands to a file..."));

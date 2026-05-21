@@ -14,8 +14,8 @@ public class ConfigCache {
     private final Object logger;
     private final boolean canDoProtocolLib;
     private final HashMap<String, CWGroup> groupList = new LinkedHashMap<>();
-    public String prefix, config_reloaded, added_to_whitelist,
-            removed_from_whitelist, group_doesnt_exist;
+    public String prefix, command_denied, subcommand_denied, no_permission, no_such_subcommand,
+            config_reloaded, added_to_whitelist, removed_from_whitelist, group_doesnt_exist;
     public boolean useProtocolLib = false;
     public MessageType messageType = MessageType.CHAT;
     public boolean debug = false;
@@ -43,12 +43,23 @@ public class ConfigCache {
         }
 
         config.addDefault("messages.prefix", "CommandWhitelist > ");
+        String vanillaUnknown = "<red><lang:command.unknown.command><newline><command><lang:command.context.here></red>";
+        config.addDefault("messages.command_denied", vanillaUnknown);
+        config.addDefault("messages.subcommand_denied", vanillaUnknown);
+        config.addDefault("messages.no_permission", vanillaUnknown);
+        config.addDefault("messages.no_such_subcommand", vanillaUnknown);
         config.addDefault("messages.config_reloaded", "<yellow>Configuration reloaded.");
         config.addDefault("messages.added_to_whitelist", "<yellow>Whitelisted command <gold>%s <yellow>for permission <gold>%s");
         config.addDefault("messages.removed_from_whitelist", "<yellow>Removed command <gold>%s <yellow>from permission <gold>%s");
         config.addDefault("messages.group_doesnt_exist", "<red>Group doesn't exist or error occured");
 
-        config.addComment("messages", "Messages use MiniMessage formatting (https://docs.adventure.kyori.net/minimessage/format)");
+        config.addComment("messages", "Messages use MiniMessage formatting (https://docs.adventure.kyori.net/minimessage/format).\n"
+                + "Special tags supported here:\n"
+                + "  <command>           = the command the player typed (e.g. \"foo bar\")\n"
+                + "  <lang:KEY>          = a vanilla Minecraft translation key, rendered in the client's own language\n"
+                + "                        e.g. <lang:command.unknown.command>, <lang:command.context.here>\n"
+                + "The default values reproduce vanilla's \"Unknown or incomplete command\" message,\n"
+                + "which the client renders in its own language automatically.");
 
         if (canDoProtocolLib)
             config.addDefault("use_protocollib", false, "Do not enable if you don't have issues with aliased commands.\nThis requires server restart to take effect.");
@@ -91,6 +102,10 @@ public class ConfigCache {
         config.addDefault("groups.default", new CWGroup("default", defaultCommands, defaultSubcommands, defaultCustomCommandDeniedMessage).serialize());
 
         prefix = config.getString("messages.prefix");
+        command_denied = config.getString("messages.command_denied");
+        subcommand_denied = config.getString("messages.subcommand_denied");
+        no_permission = config.getString("messages.no_permission");
+        no_such_subcommand = config.getString("messages.no_such_subcommand");
         config_reloaded = config.getString("messages.config_reloaded");
         added_to_whitelist = config.getString("messages.added_to_whitelist");
         removed_from_whitelist = config.getString("messages.removed_from_whitelist");

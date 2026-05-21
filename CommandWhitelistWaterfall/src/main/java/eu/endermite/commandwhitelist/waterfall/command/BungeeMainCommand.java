@@ -33,19 +33,20 @@ public class BungeeMainCommand extends Command implements TabExecutor {
             return;
         }
 
+        String typedCommand = args.length > 0 ? label + " " + String.join(" ", args) : label;
         try {
             CWCommand.CommandType commandType = CWCommand.CommandType.valueOf(args[0].toUpperCase());
             switch (commandType) {
                 case RELOAD:
                     if (!sender.hasPermission(CWPermission.RELOAD.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, configCache.prefix + configCache.no_permission));
                         return;
                     }
                     CommandWhitelistWaterfall.getPlugin().loadConfigAsync(sender);
                     return;
                 case ADD:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, configCache.prefix + configCache.no_permission));
                         return;
                     }
                     if (args.length == 3) {
@@ -58,7 +59,7 @@ public class BungeeMainCommand extends Command implements TabExecutor {
                     return;
                 case REMOVE:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, configCache.prefix + configCache.no_permission));
                         return;
                     }
                     if (args.length == 3) {
@@ -71,7 +72,7 @@ public class BungeeMainCommand extends Command implements TabExecutor {
                     return;
                 case DUMP:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
+                        audiences.sender(sender).sendMessage(CWCommand.getParsedErrorMessage(typedCommand, configCache.prefix + configCache.no_permission));
                         return;
                     }
                     audiences.sender(sender).sendMessage(Component.text("Dumping all available commands to a file..."));
