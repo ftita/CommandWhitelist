@@ -14,8 +14,8 @@ public class ConfigCache {
     private final Object logger;
     private final boolean canDoProtocolLib;
     private final HashMap<String, CWGroup> groupList = new LinkedHashMap<>();
-    public String prefix, command_denied, no_permission, no_such_subcommand, config_reloaded, added_to_whitelist,
-            removed_from_whitelist, group_doesnt_exist, subcommand_denied;
+    public String prefix, config_reloaded, added_to_whitelist,
+            removed_from_whitelist, group_doesnt_exist;
     public boolean useProtocolLib = false;
     public MessageType messageType = MessageType.CHAT;
     public boolean debug = false;
@@ -43,10 +43,6 @@ public class ConfigCache {
         }
 
         config.addDefault("messages.prefix", "CommandWhitelist > ");
-        config.addDefault("messages.command_denied", "No such command.");
-        config.addDefault("messages.subcommand_denied", "You cannot use this subcommand");
-        config.addDefault("messages.no_permission", "<red>You don't have permission to do this.");
-        config.addDefault("messages.no_such_subcommand", "<red>No subcommand by that name.");
         config.addDefault("messages.config_reloaded", "<yellow>Configuration reloaded.");
         config.addDefault("messages.added_to_whitelist", "<yellow>Whitelisted command <gold>%s <yellow>for permission <gold>%s");
         config.addDefault("messages.removed_from_whitelist", "<yellow>Removed command <gold>%s <yellow>from permission <gold>%s");
@@ -95,10 +91,6 @@ public class ConfigCache {
         config.addDefault("groups.default", new CWGroup("default", defaultCommands, defaultSubcommands, defaultCustomCommandDeniedMessage).serialize());
 
         prefix = config.getString("messages.prefix");
-        command_denied = config.getString("messages.command_denied");
-        subcommand_denied = config.getString("messages.subcommand_denied");
-        no_permission = config.getString("messages.no_permission");
-        no_such_subcommand = config.getString("messages.no_such_subcommand");
         config_reloaded = config.getString("messages.config_reloaded");
         added_to_whitelist = config.getString("messages.added_to_whitelist");
         removed_from_whitelist = config.getString("messages.removed_from_whitelist");

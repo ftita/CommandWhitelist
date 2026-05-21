@@ -29,14 +29,14 @@ public class BukkitCommandExecutor implements TabExecutor {
             switch (commandType) {
                 case RELOAD:
                     if (!sender.hasPermission(CWPermission.RELOAD.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return true;
                     }
                     CommandWhitelistBukkit.getPlugin().reloadPluginConfig(sender);
                     return true;
                 case ADD:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return true;
                     }
                     if (args.length == 3) {
@@ -49,7 +49,7 @@ public class BukkitCommandExecutor implements TabExecutor {
                     return true;
                 case REMOVE:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return true;
                     }
                     if (args.length == 3) {
@@ -62,7 +62,7 @@ public class BukkitCommandExecutor implements TabExecutor {
                     return true;
                 case DUMP:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(CommandWhitelistBukkit.getConfigCache().prefix + CommandWhitelistBukkit.getConfigCache().no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return true;
                     }
                     audiences.sender(sender).sendMessage(Component.text("Dumping all available commands to a file..."));

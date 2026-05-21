@@ -108,7 +108,7 @@ public class CommandWhitelistVelocity {
         for (String bannedSubCommand : bannedSubCommands) {
             if (command.startsWith(bannedSubCommand)) {
                 event.setResult(CommandExecuteEvent.CommandResult.denied());
-                player.sendMessage(CWCommand.miniMessage.deserialize(configCache.prefix + configCache.subcommand_denied));
+                player.sendMessage(CWCommand.UNKNOWN_COMMAND);
                 return;
             }
         }

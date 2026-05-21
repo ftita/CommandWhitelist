@@ -18,6 +18,12 @@ public class CWCommand {
 
     public static MiniMessage miniMessage = MiniMessage.miniMessage();
 
+    /**
+     * Translatable component matching vanilla Minecraft's "unknown command" message.
+     * The client renders this in its own language automatically.
+     */
+    public static final Component UNKNOWN_COMMAND = Component.translatable("command.unknown.command");
+
     public static boolean addToWhitelist(ConfigCache configCache, String command, String group) {
         CWGroup cwGroup = configCache.getGroupList().get(group);
         if (cwGroup == null) return false;

@@ -38,14 +38,14 @@ public class BungeeMainCommand extends Command implements TabExecutor {
             switch (commandType) {
                 case RELOAD:
                     if (!sender.hasPermission(CWPermission.RELOAD.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(CommandWhitelistWaterfall.getConfigCache().prefix + configCache.no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return;
                     }
                     CommandWhitelistWaterfall.getPlugin().loadConfigAsync(sender);
                     return;
                 case ADD:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(configCache.prefix + configCache.no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return;
                     }
                     if (args.length == 3) {
@@ -58,7 +58,7 @@ public class BungeeMainCommand extends Command implements TabExecutor {
                     return;
                 case REMOVE:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(configCache.prefix + configCache.no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return;
                     }
                     if (args.length == 3) {
@@ -71,7 +71,7 @@ public class BungeeMainCommand extends Command implements TabExecutor {
                     return;
                 case DUMP:
                     if (!sender.hasPermission(CWPermission.ADMIN.permission())) {
-                        audiences.sender(sender).sendMessage(CWCommand.miniMessage.deserialize(CommandWhitelistWaterfall.getConfigCache().prefix + CommandWhitelistWaterfall.getConfigCache().no_permission));
+                        audiences.sender(sender).sendMessage(CWCommand.UNKNOWN_COMMAND);
                         return;
                     }
                     audiences.sender(sender).sendMessage(Component.text("Dumping all available commands to a file..."));

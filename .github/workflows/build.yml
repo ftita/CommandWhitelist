@@ -1,0 +1,50 @@
+name: Build & Release
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn package -B --no-transfer-progress
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jars
+          path: |
+            CommandWhitelistBukkit/target/CommandWhitelist-Bukkit-*.jar
+            CommandWhitelistWaterfall/target/CommandWhitelist-Waterfall-*.jar
+            CommandWhitelistVelocity/target/CommandWhitelist-Velocity-*.jar
+            !**/original-*.jar
+
+      - name: Publish release
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          gh release delete latest --yes --cleanup-tag 2>/dev/null || true
+          gh release create latest \
+            --title "Latest Build" \
+            --notes "Build from \`${COMMIT_SHA}\`: ${COMMIT_MSG}" \
+            --prerelease \
+            CommandWhitelistBukkit/target/CommandWhitelist-Bukkit-*.jar \
+            CommandWhitelistWaterfall/target/CommandWhitelist-Waterfall-*.jar \
+            CommandWhitelistVelocity/target/CommandWhitelist-Velocity-*.jar

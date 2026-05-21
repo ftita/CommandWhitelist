@@ -10,6 +10,7 @@ import eu.endermite.commandwhitelist.common.CWGroup;
 import eu.endermite.commandwhitelist.common.ConfigCache;
 import eu.endermite.commandwhitelist.common.commands.CWCommand;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -135,19 +136,19 @@ public class CommandWhitelistBukkit extends JavaPlugin {
     }
 
     /**
-     * @return Command denied message. Will use custom if command exists in any group.
+     * @return Command denied message component. Uses per-group custom message if set,
+     *         otherwise falls back to vanilla's translatable "unknown command" component
+     *         so the client renders it in their own language.
      */
-    public static String getCommandDeniedMessage(String command) {
-        String commandDeniedMessage = configCache.command_denied;
+    public static Component getCommandDeniedMessage(String command) {
         HashMap<String, CWGroup> groups = configCache.getGroupList();
         for (CWGroup group : groups.values()) {
             if (group.getCommands().contains(command)) {
                 if (group.getCommandDeniedMessage() == null || group.getCommandDeniedMessage().isEmpty()) continue;
-                commandDeniedMessage = group.getCommandDeniedMessage();
-                break; // get first message we find
+                return CWCommand.getParsedErrorMessage(command, configCache.prefix + group.getCommandDeniedMessage());
             }
         }
-        return commandDeniedMessage;
+        return CWCommand.UNKNOWN_COMMAND;
     }
 
     public static ArrayList<String> getServerCommands() {
