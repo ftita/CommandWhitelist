@@ -65,8 +65,8 @@
 
     <repositories>
         <repository>
-            <id>jitpack</id>
-            <url>https://jitpack.io</url>
+            <id>bsdevelopment-repo</id>
+            <url>https://repo.bsdevelopment.org/releases</url>
         </repository>
         <repository>
             <id>papermc</id>
